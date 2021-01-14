@@ -1,32 +1,28 @@
 // npm i request
-// Dans la première ligne nous chargeons le module
+// Dans la première ligne, nous chargeons le module
 // Le module renvoie une fonction qui peut effectuer des requêtes HTTP
 const request = require('request');
-
-request('https://ghibliapi.herokuapp.com/', (error, response, body) => {
-
-    // Notre fonction CallBack vérifie en premier si nous avons reçu une erreur
+request('https://ghibliapi.herokuapp.com/films', (error, response, body) => {
+    // Notre fonction callback vérifie en premier si nous avons reçu une erreur.
+    // BEST PRACTICE :  consiste à vérifier d'abord s'il y a des erreurs dans un 
+    // callback afin que l'exécution du callback ne se poursuive pas avec des données manquantes.
     if (error) {
-        console.error('Could not send request to Api');
+        console.error(`Could not send request to API: ${error.message}`);
         return;
     }
-    // Nous verifions le code du statut de la réponse
-    // en vérifiant que le code est 200, cela signifie que la requête etait OK
-    if (response, statusCode != 200) {
-        console.error('Expected Status code 200');
+    // Nous vérifions ensuite le code de statut de la réponse.
+    // En vérifiant que le code de statut est 200, cela  signifie que la requête était "OK"
+    if (response.statusCode != 200) {
+        console.error(`Expected status code 200 but received ${response.statusCode}.`);
         return;
     }
-
-    console.log('Liste de films ');
-
-    var movies = JSON.parse(body);
+    console.log('Processing our list of movies');
+    // Enfin, nous analysons le corps de la réponse dans un Tableau et 
+    // passons en boucle chaque film pour enregistrer son nom et son année de sortie.
+    movies = JSON.parse(body);
     movies.forEach(movie => {
-            console.log('${movie[title']
-        }, $ { movie['release_date'] }
-        ');'
-    })
-
-
+        console.log(`${movie['title']}, ${movie['release_date']}`);
+    });
 });
 
 // Node.js est une plateforme logicielle avec une architecture orientée événements 
